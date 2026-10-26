@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Safa Restaurant – Order Online</title>
+<style>
+:root{--bg:#fff;--card:#fff;--fill:#f2f2f7;--text:#1c1c1e;--muted:#8e8e93;--accent:#ff8200;--accent-t:#fff;--line:#e5e5ea;--glass:rgba(255,255,255,.78);--sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Roboto,Arial,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1c1c1e;--fill:#2c2c2e;--text:#fff;--muted:#98989f;--line:#38383a;--glass:rgba(28,28,30,.78);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--card:#1c1c1e;--fill:#2c2c2e;--text:#fff;--muted:#98989f;--line:#38383a;--glass:rgba(28,28,30,.78);color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);padding-bottom:120px;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:10}
+.top{max-width:760px;margin:auto;padding:26px 20px 6px;display:flex;justify-content:space-between;align-items:flex-end}
+.top h1{margin:0;font-size:2.2rem;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.top p{margin:2px 0 0;color:var(--accent);font-weight:600;font-size:.95rem}
+.call{display:flex;align-items:center;gap:6px;background:var(--fill);color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;padding:9px 16px;border-radius:99px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;display:flex;gap:8px;overflow-x:auto;padding:10px 20px;max-width:760px;margin:auto;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:0;background:var(--fill);color:var(--text);padding:8px 16px;border-radius:99px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;transition:.2s}
+.tab.on{background:var(--accent);color:var(--accent-t)}
+main{max-width:760px;margin:auto;padding:10px 16px 0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:620px){main{grid-template-columns:repeat(3,1fr)}}
+.item{background:var(--card);border-radius:26px;padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 0 0 1px var(--line),0 10px 28px -14px rgba(0,0,0,.22)}
+.thumb{width:100%;max-width:150px;aspect-ratio:1;border-radius:50%;object-fit:cover;box-shadow:0 12px 22px -10px rgba(0,0,0,.45)}
+.emoji{font-size:3.4rem;line-height:150px}
+.info{width:100%;margin-top:12px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.info b{display:block;font-size:1rem;font-weight:700;line-height:1.25;letter-spacing:-.01em}
+.price{color:var(--muted);font-weight:600;font-size:.9rem}
+.foot{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:10px}
+.foot .price{color:var(--accent);font-size:1rem;font-weight:700}
+.add{width:34px;height:34px;border:0;border-radius:50%;background:var(--accent);color:#fff;font-size:1.5rem;line-height:1;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 0 3px}
+.qty{display:flex;align-items:center;gap:8px;background:var(--fill);border-radius:99px;padding:3px}
+.qty button{width:28px;height:28px;border:0;border-radius:50%;background:var(--accent);color:#fff;font:inherit;font-weight:700;font-size:1.05rem;cursor:pointer;padding:0 0 2px}
+.qty b{min-width:14px;text-align:center;font-size:.95rem}
+.bar{position:fixed;inset:auto 0 0 0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:.5px solid var(--line);transition:.3s}
+.bar button{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:560px;margin:auto;border:0;background:var(--accent);color:#fff;padding:16px 22px;border-radius:18px;font:inherit;font-weight:700;font-size:1rem;cursor:pointer}
+.bar:has(button:disabled){transform:translateY(110%)}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:flex-end;justify-content:center;z-index:15}
+.sheet.open{display:flex}
+.panel{position:relative;background:var(--bg);width:100%;max-width:720px;max-height:92%;overflow:auto;border-radius:30px 30px 0 0;padding:26px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.panel::before{content:"";position:absolute;top:8px;left:50%;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:var(--line)}
+.panel h2{margin:0 0 12px;font-size:1.7rem;font-weight:800;letter-spacing:-.02em}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:.5px solid var(--line)}
+.total{font-weight:800;font-size:1.2rem;border:0;padding-top:14px}
+.total span:last-child{color:var(--accent)}
+input,textarea{width:100%;margin-top:10px;padding:14px;border:0;border-radius:14px;background:var(--fill);color:var(--text);font:inherit}
+input:focus,textarea:focus{outline:2px solid var(--accent)}
+.pay{display:flex;gap:2px;margin-top:12px;background:var(--fill);padding:3px;border-radius:12px}
+.pay label{flex:1;border-radius:10px;padding:9px;text-align:center;cursor:pointer;font-weight:600;font-size:.92rem}
+.pay input{display:none}
+.pay label:has(input:checked){background:var(--card);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.submit{width:100%;margin-top:14px;border:0;background:var(--accent);color:#fff;padding:16px;border-radius:16px;font:inherit;font-weight:700;font-size:1rem;cursor:pointer}
+.ghost{background:none;color:var(--accent);margin-top:2px}
+.err{color:#ff3b30;font-size:.85rem;margin-top:8px;min-height:1em}
+.ok{text-align:center;padding:20px 0}.ok .emoji{font-size:3.4rem;line-height:1.2}
+#splash{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .6s,visibility .6s;cursor:pointer}
+#splash.hide{opacity:0;visibility:hidden}
+#splash .icon{width:104px;height:104px;border-radius:26px;background:linear-gradient(160deg,#ffa63d,#ff7a00);color:#fff;font-size:3.6rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 36px -12px rgba(255,130,0,.6);animation:pop .9s cubic-bezier(.2,.9,.3,1.2) both}
+#splash .fa{font-size:2.3rem;font-weight:800;letter-spacing:-.03em;margin-top:14px;animation:up .7s .35s both}
+#splash .en{color:var(--accent);letter-spacing:.5em;margin-right:-.5em;font-size:.75rem;font-weight:700;animation:up .7s .5s both}
+#splash small{color:var(--muted);margin-top:34px;font-size:.8rem;animation:up .7s 1s both}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#splash .icon{position:relative;animation:drop 1.4s cubic-bezier(.45,0,.9,.55) both;font-size:1rem}
+#splash .pl{font-size:3.7rem;line-height:1}
+#splash .fc{position:absolute;left:50%;top:50%;font-size:2.1rem;line-height:1;transform:translate(-50%,-56%);animation:wig .6s 1.4s both}
+#splash .name{height:3.2rem;margin-top:22px;font-family:Tahoma,"Geeza Pro",Arial,sans-serif;font-size:2.2rem;font-weight:800;display:flex;align-items:center}
+#splash .cur{display:inline-block;width:3px;height:1.9rem;background:var(--accent);margin-right:6px;animation:blink .8s steps(2) infinite}
+#splash small{animation-delay:3.6s}
+@keyframes drop{0%{transform:translateY(-110vh) rotate(-25deg)}50%{transform:translateY(0) rotate(6deg) scale(1.05,.92)}62%{transform:translateY(-34px) rotate(-3deg)}76%{transform:translateY(0) scale(1.03,.95)}86%{transform:translateY(-10px)}100%{transform:none}}
+@keyframes wig{0%,100%{transform:translate(-50%,-56%)}30%{transform:translate(-50%,-56%) rotate(-14deg) scale(1.15)}65%{transform:translate(-50%,-56%) rotate(10deg) scale(1.1)}}
+@keyframes blink{50%{opacity:0}}
+
+.act{display:flex;align-items:center;gap:8px}
+.ic{width:38px;height:38px;border:0;border-radius:50%;background:var(--fill);font-size:1.1rem;cursor:pointer;padding:0}
+.tabs{gap:10px;padding:12px 14px 14px}
+.tab{flex-direction:column;align-items:center;gap:7px;background:none;padding:4px 2px;min-width:80px;font-size:.78rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.tab img{width:68px;height:68px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--line);animation:bob 2.6s ease-in-out infinite;animation-delay:calc(var(--i)*.37s);transition:box-shadow .2s}
+.tab.on{background:none;color:var(--accent)}
+.tab.on img{box-shadow:0 0 0 3px var(--accent),0 10px 18px -6px rgba(255,130,0,.65)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
+.thumb{max-width:100px}
+.loc{margin-top:12px}
+.locbtn{width:100%;border:0;background:var(--fill);color:var(--accent);padding:14px;border-radius:14px;font:inherit;font-weight:700;cursor:pointer}
+.locst{font-size:.85rem;color:var(--muted);margin-top:8px;text-align:center}
+.locst a{color:var(--accent)}
+#splash .icon{color:var(--text)}
+#splash .tongue{transform-box:fill-box;transform-origin:50% 0;animation:wag .5s 1.5s 3 alternate both}
+#splash .eyes{transform-box:fill-box;transform-origin:center;animation:blinkE 3s 1.8s infinite}
+@keyframes wag{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+@keyframes blinkE{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+#splash .name{font-family:var(--sans);letter-spacing:-.02em;font-size:2.1rem}
+#splash .cur{margin-right:0;margin-left:4px}
+@media(prefers-reduced-motion:reduce){.tab img{animation:none}}
+.mapcard{position:relative;height:130px;border-radius:18px;overflow:hidden;background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/32px 32px,var(--fill);display:flex;align-items:center;justify-content:center}
+.mapcard::before{content:"";position:absolute;width:150%;height:14px;background:var(--bg);transform:rotate(-18deg);top:46%;opacity:.9}
+.pinbtn{position:relative;z-index:2;width:58px;height:58px;border:0;border-radius:50%;background:var(--accent);box-shadow:0 10px 20px -6px rgba(255,130,0,.7);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.ring{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;border:2px solid var(--accent);opacity:0}
+.busy .ring{animation:ping 1.4s infinite}.busy .r2{animation-delay:.7s}
+.idle .pinbtn{animation:hop 1.8s ease-in-out infinite}
+.ok .pinbtn{background:#34c759;box-shadow:0 10px 20px -6px rgba(52,199,89,.7);animation:land .6s both}
+.err .pinbtn{background:#ff3b30}
+@keyframes ping{0%{transform:scale(1);opacity:.8}100%{transform:scale(3.4);opacity:0}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes land{0%{transform:translateY(-34px)}60%{transform:none}80%{transform:translateY(-6px)}100%{transform:none}}
+.locst{padding:0 4px}
+.far .pinbtn{background:#ff9500}
+#done{position:fixed;inset:0;z-index:30;background:#000;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;animation:fade .5s both}
+#done .dn{font-size:clamp(4rem,24vw,7.5rem);font-weight:800;letter-spacing:-.04em;line-height:1}
+#done .wa{background:#25d366;color:#fff;text-decoration:none;font-weight:700;padding:14px 26px;border-radius:99px}
+#done .back{background:none;border:0;color:#aaa;font:inherit;cursor:pointer}
+#done .by{position:absolute;right:14px;bottom:calc(10px + env(safe-area-inset-bottom,0px));font-size:.62rem;color:rgba(255,255,255,.55);letter-spacing:.04em}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+<div id="splash" onclick="this.classList.add('hide')"><div class="icon"><svg viewBox="0 0 160 120" width="170" height="128" aria-hidden="true"><g stroke="currentColor" stroke-width="4" stroke-linecap="round" fill="none"><path d="M16 18v24M25 18v24M34 18v24M16 42q9 9 18 0M25 51v52"/><path d="M138 20q14 16 0 44M138 20v83"/></g><circle cx="80" cy="62" r="52" fill="#ff8200"/><circle cx="80" cy="62" r="44" fill="#fff"/><circle cx="80" cy="62" r="37" fill="none" stroke="#ffe0bd" stroke-width="2"/><g class="eyes"><ellipse cx="65" cy="54" rx="5.5" ry="7" fill="#1c1c1e"/><ellipse cx="95" cy="54" rx="5.5" ry="7" fill="#1c1c1e"/><circle cx="67" cy="51.5" r="1.8" fill="#fff"/><circle cx="97" cy="51.5" r="1.8" fill="#fff"/></g><circle cx="55" cy="68" r="5" fill="#ffb3a7" opacity=".7"/><circle cx="105" cy="68" r="5" fill="#ffb3a7" opacity=".7"/><g class="tongue"><path d="M86 79C86 96 104 96 104 76Z" fill="#ff5d73"/><path d="M95 80v8" stroke="#d93a56" stroke-width="2" stroke-linecap="round"/></g><path d="M58 72Q80 92 102 72" fill="none" stroke="#1c1c1e" stroke-width="4.5" stroke-linecap="round"/></svg></div><div class="name" lang="en" dir="ltr"><span id="tw"></span><i class="cur"></i></div><small>Tap to continue</small></div>
+<div class="top"><div><h1>Menu</h1><p>Safa Restaurant · Hazara Town, Quetta</p></div><div class="act"><button class="ic" id="th" aria-label="Toggle dark mode">🌙</button><a class="call" href="tel:03108825552">Call</a></div></div>
+<div class="tabs" id="tabs"></div>
+<main id="list"></main>
+<div class="bar"><button id="cartBtn" disabled><span id="cnt">Your cart is empty</span><span id="sum"></span></button></div>
+<div class="sheet" id="sheet"><div class="panel" id="panel"></div></div>
+
+<script>
+const MENU=[
+{c:"Kebabs",e:"🍢",i:[
+["Kofta Kebab",700],["Tikka Kebab",700],["Chicken Kebab",650],["Chicken Wings",650],
+["Reshmi Kebab",650],["Jigar Kebab",650],["Malai Boti",650]]},
+{c:"Chelo",e:"🍚",i:[
+["Chelo Kebab",700],["Chicken Chelo",700],["Reshmi Chelo",700],["Tikka Chelo",700],["Plain Rice",350]]},
+{c:"Kabuli & Biryani",e:"🍛",i:[
+["Beef Kabuli (Single)",600],["Beef Kabuli (Double)",700],
+["Chicken Kabuli (Single)",600],["Chicken Kabuli (Double)",700],
+["Chicken Biryani (Single)",600],["Chicken Biryani (Double)",600],
+["Beef Biryani (Single)",600],["Beef Biryani (Double)",700],
+["Kabuli Gosfand (Mutton)",1100],["Roast",1100]]},
+{c:"Fish",e:"🐟",i:[["Salmon Fish",1800],["Fish Finger",1600]]},
+{c:"Rolls & Burgers",e:"🌯",i:[
+["Chicken Roll",250],["Beef Roll",250],["Qeema Roll",250],["Mayo Roll",250],
+["Beef Burger",300],["Chicken Burger",300],["Zinger Burger",350],["Chips",150]]},
+{c:"Platters & Pizza",e:"🍕",i:[
+["Platter (3 persons)",2500],["Platter (4 persons)",3300],["Platter (5 persons)",4100],["Platter (6 persons)",4900],
+["Pizza (M)",800],["Pizza (L)",1100],["Pizza (XL)",1500]]}
+];
+let n=0;
+const all=[];
+MENU.forEach(m=>m.i=m.i.map(([name,p])=>{const x={id:++n,n:name,p,e:m.e};all.push(x);return x}));
+const IMG={}; /* base64 photos removed here for readability; the full working file is index.html */
+all.forEach(x=>{x.img=IMG[x.n]||""});
+const fmt=v=>"Rs "+v.toLocaleString("en-US");
+let cart={},cat=0;
+const $=id=>document.getElementById(id);
+
+const REP=["Kofta Kebab","Chelo Kebab","Chicken Kabuli (Single)","Salmon Fish","Zinger Burger","Pizza (M)"];
+function renderTabs(){
+ $("tabs").innerHTML=MENU.map((m,k)=>`<button class="tab ${k===cat?"on":""}" style="--i:${k}" onclick="cat=${k};renderTabs();renderList()"><img src="${IMG[REP[k]]}" alt=""><span>${m.c}</span></button>`).join("");
+}
+function renderList(){
+ $("list").innerHTML=MENU[cat].i.map(x=>{
+  const q=cart[x.id]||0;
+  const ctl=q?`<div class="qty"><button onclick="chg(${x.id},-1)">−</button><b>${q}</b><button onclick="chg(${x.id},1)">+</button></div>`:`<button class="add" aria-label="Add" onclick="chg(${x.id},1)">+</button>`;
+  const pic=x.img?`<img class="thumb" src="${x.img}" alt="${x.n}">`:`<div class="emoji">${x.e}</div>`;
+  return `<div class="item">${pic}<div class="info"><b>${x.n}</b></div><div class="foot"><div class="price">${fmt(x.p)}</div>${ctl}</div></div>`;
+ }).join("");
+}
+function chg(id,d){
+ cart[id]=Math.max(0,(cart[id]||0)+d);
+ if(!cart[id])delete cart[id];
+ renderList();renderBar();
+ if($("sheet").classList.contains("open"))showCart();
+}
+function totals(){
+ let c=0,s=0;
+ for(const id in cart){c+=cart[id];s+=cart[id]*all.find(x=>x.id==id).p}
+ return{c,s};
+}
+function renderBar(){
+ const{c,s}=totals();
+ $("cartBtn").disabled=!c;
+ $("cnt").textContent=c?`View cart (${c} item${c>1?"s":""})`:"Your cart is empty";
+ $("sum").textContent=c?fmt(s):"";
+}
+function close_(){$("sheet").classList.remove("open")}
+$("sheet").addEventListener("click",e=>{if(e.target.id==="sheet")close_()});
+$("cartBtn").onclick=()=>{showCart();$("sheet").classList.add("open")};
+
+function showCart(){
+ const{s}=totals();
+ if(!s){close_();return}
+ const rows=Object.keys(cart).map(id=>{const x=all.find(y=>y.id==id);return `<div class="row"><span>${x.n} × ${cart[id]}</span><span>${fmt(x.p*cart[id])}</span></div>`}).join("");
+ $("panel").innerHTML=`<h2>Your order</h2>${rows}
+ <div class="row total"><span>Total</span><span>${fmt(s)}</span></div>
+ <input id="name" placeholder="Full name" autocomplete="name">
+ <input id="phone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel">
+ ${locHtml()}<textarea id="addr" rows="2" placeholder="Address details (block, street, house no.)"></textarea>
+ <div class="pay"><label><input type="radio" name="pay" value="Cash" checked>Cash on delivery</label><label><input type="radio" name="pay" value="Pickup">Pickup</label></div>
+ <div class="err" id="err"></div>
+ <button class="submit" onclick="submitOrder()">Place order</button>
+ <button class="submit ghost" onclick="close_()">Keep browsing</button>`;
+}
+function submitOrder(){
+ const name=$("name").value.trim(),phone=$("phone").value.replace(/[\s-]/g,""),addr=$("addr").value.trim();
+ const pickup=document.querySelector('input[name=pay]:checked').value==="Pickup";
+ if(!pickup&&ls==="far"){$("err").textContent="Delivery is only available in Hazara Town, Quetta. Choose Pickup or update your location.";return}
+ if(!name||!/^\+?\d{9,15}$/.test(phone)||(!pickup&&!loc&&addr.length<6)){
+  $("err").textContent="Please enter your name, a valid phone number"+(pickup?".":", and share your location or type your address.");return;
+ }
+ const code=Math.floor(10000+Math.random()*90000);
+ const{s}=totals();
+ const L=["*New order #"+code+" – Safa Restaurant*",""];
+ Object.keys(cart).forEach(id=>{const x=all.find(y=>y.id==id);L.push("• "+x.n+" × "+cart[id]+" = "+fmt(x.p*cart[id]))});
+ L.push("","*Total: "+fmt(s)+"*","Type: "+(pickup?"Pickup":"Delivery (cash)"),"Name: "+name,"Phone: "+phone);
+ if(!pickup&&addr)L.push("Address: "+addr);
+ if(!pickup&&loc)L.push("Location: https://www.google.com/maps?q="+loc.lat+","+loc.lng);
+ const url="https://wa.me/"+WA+"?text="+encodeURIComponent(L.join("\n"));
+ const d=document.createElement("div");d.id="done";
+ d.innerHTML=`<div class="dn">Done</div><a class="wa" href="${url}" target="_blank" rel="noopener">Send order on WhatsApp</a><button class="back" onclick="finish()">Back to menu</button><div class="by">Website by M.Ali Jafery</div>`;
+ document.body.appendChild(d);close_();
+ try{window.open(url,"_blank","noopener")}catch(e){}
+}
+function finish(){cart={};renderList();renderBar();const d=$("done");if(d)d.remove()}
+const WA="923108825552";
+const ZONE={lat:30.1793,lng:66.9637,r:4};
+const dist=(a,b)=>{const R=6371,t=x=>x*Math.PI/180,dl=t(b-ZONE.lng),dp=t(a-ZONE.lat),h=Math.sin(dp/2)**2+Math.cos(t(ZONE.lat))*Math.cos(t(a))*Math.sin(dl/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
+let loc=null,ls="idle",lmsg="";
+function locHtml(){
+ const msg=ls==="far"?`You’re about ${dist(loc.lat,loc.lng).toFixed(1)} km from Hazara Town. Sorry, we only deliver in Hazara Town, Quetta.`:ls==="busy"?"Finding your location…":ls==="ok"?`Location found · ±${loc.acc} m · <a href="https://www.google.com/maps?q=${loc.lat},${loc.lng}" target="_blank" rel="noopener">View on map</a>`:ls==="err"?lmsg:"Delivering in Hazara Town, Quetta · tap the pin to use your location";
+ return `<div id="locbox" class="loc"><div class="mapcard ${ls}"><span class="ring"></span><span class="ring r2"></span><button class="pinbtn" onclick="locate()" aria-label="Find my location"><svg viewBox="0 0 24 24" width="30" height="30"><path fill="#fff" d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></button></div><div class="locst">${msg}</div></div>`;
+}
+function locRefresh(){const b=$("locbox");if(b)b.outerHTML=locHtml()}
+function locate(){
+ if(!navigator.geolocation){ls="err";lmsg="Location isn’t available here. Please type your address below.";locRefresh();return}
+ ls="busy";locRefresh();
+ navigator.geolocation.getCurrentPosition(pos=>{
+  loc={lat:+pos.coords.latitude.toFixed(6),lng:+pos.coords.longitude.toFixed(6),acc:Math.round(pos.coords.accuracy)};
+  ls=dist(loc.lat,loc.lng)>ZONE.r?"far":"ok";locRefresh();
+ },e=>{
+  ls="err";lmsg=e&&e.code===1?"Location access was blocked. If no permission popup appeared, this preview doesn’t allow GPS. Please type your address below.":"Couldn’t get your location. Tap the pin to try again, or type your address below.";locRefresh();
+ },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+}
+const darkNow=()=>{const t=document.documentElement.dataset.theme;return t?t==="dark":matchMedia("(prefers-color-scheme:dark)").matches};
+function setTheme(d){document.documentElement.dataset.theme=d?"dark":"light";$("th").textContent=d?"☀️":"🌙";try{localStorage.setItem("th",d?"dark":"light")}catch(e){}}
+document.documentElement.dataset.theme="light";try{const t=localStorage.getItem("th");if(t)document.documentElement.dataset.theme=t}catch(e){}
+$("th").textContent=darkNow()?"☀️":"🌙";
+$("th").onclick=()=>setTheme(!darkNow());
+renderTabs();renderList();renderBar();
+(()=>{const t="Safa Restaurant",el=$("tw");let i=0;setTimeout(function k(){el.textContent=t.slice(0,++i);if(i<t.length)setTimeout(k,170)},1500)})();
+setTimeout(()=>$("splash").classList.add("hide"),5200);
+</script>
+</body>
+</html>
